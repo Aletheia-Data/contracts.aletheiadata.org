@@ -2,18 +2,17 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PDNft is ERC721, Ownable {
+contract PDNft is ERC721URIStorage, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
 
     Counters.Counter private supply;
 
     string public uriPrefix = "";
-    string public uriCid = "";
     string public hiddenMetadataUri;
 
     uint256 public cost = 0.5 ether; // MATIC on polygon
@@ -22,10 +21,13 @@ contract PDNft is ERC721, Ownable {
     bool public paused = true;
     bool public revealed = false;
 
+    mapping(uint256 => string) private _tokenURIs;
+
     constructor() ERC721("Public Data NFT", "PDNFT") {
         setHiddenMetadataUri(
             "ipfs://QmVcC9mH4gV9BbdjqwibuCT6cpUHbRtqYR79QKjuS4QwvB/hidden.json"
         );
+        setUriPrefix("ipfs://");
     }
 
     modifier mintCompliance(uint256 _mintAmount) {
@@ -49,9 +51,7 @@ contract PDNft is ERC721, Ownable {
 
         require(msg.value >= cost * _mintAmount, "Insufficient funds!");
 
-        setUriCid(_cid);
-
-        _mintLoop(msg.sender, _mintAmount);
+        _mintLoop(msg.sender, _mintAmount, _cid);
     }
 
     function mintForAddress(
@@ -59,8 +59,7 @@ contract PDNft is ERC721, Ownable {
         address _receiver,
         string memory _cid
     ) public mintCompliance(_mintAmount) onlyOwner {
-        setUriCid(_cid);
-        _mintLoop(_receiver, _mintAmount);
+        _mintLoop(_receiver, _mintAmount, _cid);
     }
 
     function walletOfOwner(address _owner)
@@ -107,8 +106,19 @@ contract PDNft is ERC721, Ownable {
         string memory currentBaseURI = _baseURI();
         return
             bytes(currentBaseURI).length > 0
-                ? string(abi.encodePacked(currentBaseURI, uriCid))
+                ? string(abi.encodePacked(currentBaseURI, _tokenURIs[_tokenId]))
                 : "";
+    }
+
+    function _setTokenURI(uint256 _tokenId, string memory _cid)
+        internal
+        override
+    {
+        require(
+            _exists(_tokenId),
+            "ERC721Metadata: URI set of nonexistent token"
+        );
+        _tokenURIs[_tokenId] = _cid;
     }
 
     function setRevealed(bool _state) public onlyOwner {
@@ -137,10 +147,6 @@ contract PDNft is ERC721, Ownable {
         uriPrefix = _uriPrefix;
     }
 
-    function setUriCid(string memory _uriCid) internal {
-        uriCid = _uriCid;
-    }
-
     function setPaused(bool _state) public onlyOwner {
         paused = _state;
     }
@@ -160,10 +166,16 @@ contract PDNft is ERC721, Ownable {
         // =============================================================================
     }
 
-    function _mintLoop(address _receiver, uint256 _mintAmount) internal {
+    function _mintLoop(
+        address _receiver,
+        uint256 _mintAmount,
+        string memory _cid
+    ) internal {
         for (uint256 i = 0; i < _mintAmount; i++) {
             supply.increment();
-            _safeMint(_receiver, supply.current());
+            uint256 tokenId = supply.current();
+            _safeMint(_receiver, tokenId);
+            _setTokenURI(tokenId, _cid);
         }
     }
 
