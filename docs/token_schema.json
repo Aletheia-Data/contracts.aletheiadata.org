@@ -1,0 +1,17 @@
+{
+   "attributes" : [
+      {
+         "trait_type" : "format",
+         "value" : "pdf"
+      },
+      {
+         "trait_type" : "source",
+         "value" : "Ministerio de Educación de la República Dominicana"
+      }
+   ],
+   "description" : "Relación de Personal Contratado al 31 de Mayo del 2021",
+   "external_url" : "https://ipfs.io/ipfs/bafybeieagjmhrt6sn4yeuk2cypsxnsg5az7ht3xcolzyfidzqgv6szuznu",
+   "cid": "bafybeieagjmhrt6sn4yeuk2cypsxnsg5az7ht3xcolzyfidzqgv6szuznu",
+   "image" : "QmTbP26UaQoRCGhogGfbBF6wyCXSSxVFguKFBNivQHtXSb",
+   "name" : "Relación de Personal Contratado al 31 de Mayo del 2021"
+}

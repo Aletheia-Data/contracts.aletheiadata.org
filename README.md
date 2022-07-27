@@ -1,1 +1,1 @@
-# contracts.aletheiadata.org
+# Aletheia Data Contracts
