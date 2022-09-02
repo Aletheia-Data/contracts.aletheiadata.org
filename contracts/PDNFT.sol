@@ -23,9 +23,11 @@ contract PDNft is ERC721URIStorage, Ownable {
 
     mapping(uint256 => string) private _tokenURIs;
 
+    mapping(string => uint256[]) Cids;
+
     constructor() ERC721("Public Data NFT", "PDNFT") {
         setHiddenMetadataUri(
-            "ipfs://QmVcC9mH4gV9BbdjqwibuCT6cpUHbRtqYR79QKjuS4QwvB/hidden.json"
+            "ipfs://QmVcC9mH4gV9BbdjqwibuCT6cpUHbRtqYR79QKjuS4QwvB/hidden.json" // TODO: change hide file
         );
         setUriPrefix("ipfs://");
     }
@@ -36,6 +38,19 @@ contract PDNft is ERC721URIStorage, Ownable {
             "Invalid mint amount!"
         );
         _;
+    }
+
+    function addCid(string memory _cid, uint256 _tokenId) public {
+        Cids[_cid].push(_tokenId);
+    }
+
+    // Return array of bytes32 as solidity doesn't support returning string arrays yet
+    function getTokensCID(string memory _cid)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return Cids[_cid];
     }
 
     function totalSupply() public view returns (uint256) {
@@ -119,6 +134,7 @@ contract PDNft is ERC721URIStorage, Ownable {
             "ERC721Metadata: URI set of nonexistent token"
         );
         _tokenURIs[_tokenId] = _cid;
+        addCid(_cid, _tokenId);
     }
 
     function setRevealed(bool _state) public onlyOwner {
