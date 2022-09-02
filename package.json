@@ -1,0 +1,29 @@
+{
+  "name": "contracts.aletheiadata.org",
+  "version": "0.0.2",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aletheia-Data/contracts.aletheiadata.org.git"
+  },
+  "keywords": [
+    "contracts"
+  ],
+  "author": "Aletheia Data",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aletheia-Data/contracts.aletheiadata.org/issues"
+  },
+  "homepage": "https://github.com/Aletheia-Data/contracts.aletheiadata.org#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3"
+  }
+}
