@@ -1,29 +1,30 @@
 {
-  "name": "contracts.aletheiadata.org",
-  "version": "0.0.2",
+  "name": "contracts-hardhat.aletheiadata.org",
+  "version": "0.0.1",
   "description": "",
-  "main": "truffle-config.js",
-  "directories": {
-    "doc": "docs",
-    "test": "test"
-  },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Aletheia-Data/contracts.aletheiadata.org.git"
-  },
-  "keywords": [
-    "contracts"
-  ],
   "author": "Aletheia Data",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Aletheia-Data/contracts.aletheiadata.org/issues"
-  },
-  "homepage": "https://github.com/Aletheia-Data/contracts.aletheiadata.org#readme",
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+  "devDependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.5",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.1.1",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "@openzeppelin/contracts": "^4.7.3",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.2",
+    "ethers": "^5.7.0",
+    "hardhat": "^2.11.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.7.22",
+    "typechain": "^8.1.0"
   }
 }
