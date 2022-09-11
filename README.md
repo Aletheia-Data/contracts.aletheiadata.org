@@ -79,7 +79,7 @@ $ npx hardhat test
 Deploy contract to network (requires PRIVATE and ALCHEMY API key)
 
 ```
-npx hardhat run ./scripts/deploy.ts --network <NETWORK>
+npx hardhat run ./scripts/deploy.js --network <NETWORK>
 ```
 
 Validate a contract with etherscan (requires API key)
