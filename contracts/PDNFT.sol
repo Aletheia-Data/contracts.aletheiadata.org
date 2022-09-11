@@ -40,7 +40,7 @@ contract PDNft is ERC721URIStorage, Ownable {
         _;
     }
 
-    function addCid(string memory _cid, uint256 _tokenId) public {
+    function addCid(string memory _cid, uint256 _tokenId) internal {
         Cids[_cid].push(_tokenId);
     }
 
@@ -57,7 +57,7 @@ contract PDNft is ERC721URIStorage, Ownable {
         return supply.current();
     }
 
-    function mint(uint256 _mintAmount, string memory _cid)
+    function mint(uint256 _mintAmount, string memory _metadata, string memory _cid)
         public
         payable
         mintCompliance(_mintAmount)
@@ -66,15 +66,16 @@ contract PDNft is ERC721URIStorage, Ownable {
 
         require(msg.value >= cost * _mintAmount, "Insufficient funds!");
 
-        _mintLoop(msg.sender, _mintAmount, _cid);
+        _mintLoop(msg.sender, _mintAmount, _metadata, _cid);
     }
 
     function mintForAddress(
         uint256 _mintAmount,
         address _receiver,
+        string memory _metadata,
         string memory _cid
     ) public mintCompliance(_mintAmount) onlyOwner {
-        _mintLoop(_receiver, _mintAmount, _cid);
+        _mintLoop(_receiver, _mintAmount, _metadata, _cid);
     }
 
     function walletOfOwner(address _owner)
@@ -125,15 +126,14 @@ contract PDNft is ERC721URIStorage, Ownable {
                 : "";
     }
 
-    function _setTokenURI(uint256 _tokenId, string memory _cid)
+    function _setTokenURI(uint256 _tokenId, string memory _metadata, string memory _cid)
         internal
-        override
     {
         require(
             _exists(_tokenId),
             "ERC721Metadata: URI set of nonexistent token"
         );
-        _tokenURIs[_tokenId] = _cid;
+        _tokenURIs[_tokenId] = _metadata;
         addCid(_cid, _tokenId);
     }
 
@@ -185,13 +185,14 @@ contract PDNft is ERC721URIStorage, Ownable {
     function _mintLoop(
         address _receiver,
         uint256 _mintAmount,
+        string memory _metadata,
         string memory _cid
     ) internal {
         for (uint256 i = 0; i < _mintAmount; i++) {
             supply.increment();
             uint256 tokenId = supply.current();
             _safeMint(_receiver, tokenId);
-            _setTokenURI(tokenId, _cid);
+            _setTokenURI(tokenId, _metadata, _cid);
         }
     }
 
